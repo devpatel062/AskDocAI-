@@ -10,8 +10,9 @@ embedding_model = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 db = FAISS.load_local("./vector_store_pubmed", embeddings=embedding_model, allow_dangerous_deserialization=True)
 
 llm = HuggingFacePipeline.from_model_id(
-    model_id="google/flan-t5-small",
+    model_id="google/flan-t5-large",
     task="text2text-generation",
+    model_kwargs={"temperature": 0.5, "max_length": 512},
     device=0 if torch.cuda.is_available() else -1
 )
 
