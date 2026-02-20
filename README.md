@@ -47,8 +47,8 @@ AskDocAI/
 
 ```mermaid
 graph TD
-    User[User] -->|Interacts| UI[Frontend (React)]
-    UI -->|POST /api/ask| API[Backend API (FastAPI)]
+    User[User] -->|Interacts| UI["Frontend (React)"]
+    UI -->|POST /api/ask| API["Backend API (FastAPI)"]
     
     subgraph Backend
         API -->|Verify Token| Auth[Auth Module]
@@ -56,7 +56,7 @@ graph TD
         
         RAG -->|Encode Query| Embed[Embedding Model]
         Embed -->|Search| VectorDB[(FAISS Vector Store)]
-        VectorDB -->|Retrieved Docs| LLM[LLM (Flan-T5)]
+        VectorDB -->|Retrieved Docs| LLM["LLM (Flan-T5)"]
         RAG -->|Context + Query| LLM
     end
     
