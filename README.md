@@ -15,7 +15,8 @@ AskDocAI/
 │   ├── package.json        # Frontend dependencies
 │   └── vite.config.js      # Vite configuration
 ├── scripts/                # Utility scripts
-│   └── create_faiss_index.py # Script to generate vector embeddings
+│   ├── create_faiss_index.py # Script to generate vector embeddings
+│   └── import_medquad.py     # Script to import MedQuAD dataset
 ├── vector_store_pubmed/    # FAISS vector store (generated)
 ├── requirements.txt        # Python dependencies
 └── README.md              # Project documentation
@@ -24,7 +25,8 @@ AskDocAI/
 ## 🚀 Unique Functionality
 
 - **RAG Architecture**: Combines vector search (retrieval) with a generative model (generation) to hallucinate less and ground answers in fact.
-- **Medical Domain Focus**: Designed to work with PubMed or medical texts stored in a FAISS index.
+- **Source Citations**: Returns metadata (source, question ID) for the retrieved documents used to generate the answer.
+- **Medical Domain Focus**: Designed to work with MedQuAD, PubMed, or medical texts stored in a FAISS index.
 - **Conversational Context**: Capable of handling follow-up questions by maintaining chat history.
 - **Secure API**: Implements basic token-based authentication for API access.
 
