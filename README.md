@@ -120,3 +120,19 @@ graph TD
 1. Open the frontend URL in your browser.
 2. Enter a medical question (e.g., "What are the symptoms of diabetes?").
 3. The system will retrieve relevant snippets from the indexed documents and generate an answer.
+
+## 📥 Import MedQuAD Dataset
+
+1. Download and extract MedQuAD XML files to a local folder (example: `./MedQuAD-master`).
+2. Convert XML to this project's JSON format:
+   ```bash
+   python scripts/import_medquad.py --input ./MedQuAD-master --output data/medical_data.json
+   ```
+3. Rebuild the FAISS vector index with metadata:
+   ```bash
+   python scripts/create_faiss_index.py
+   ```
+
+The backend `/api/ask` endpoint now includes:
+- `response`: generated answer (existing field, unchanged for frontend compatibility)
+- `citations`: source metadata for retrieved context documents
