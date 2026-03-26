@@ -3,11 +3,11 @@ from __future__ import annotations
 import torch
 from langchain.chains import ConversationalRetrievalChain
 from langchain.prompts import PromptTemplate
-from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.llms import HuggingFacePipeline
 from langchain_community.vectorstores import FAISS
 
-embedding_model = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 db = FAISS.load_local(
     "./vector_store_pubmed",

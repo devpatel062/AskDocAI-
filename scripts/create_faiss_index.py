@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 
@@ -36,15 +36,32 @@ def load_documents(data_path: Path) -> list[Document]:
     for idx, entry in enumerate(data):
         question = (entry.get("question") or "").strip()
         answer = (entry.get("answer") or "").strip()
-        if not question or not answer:
+        title = (entry.get("title") or "").strip()
+        abstract = (entry.get("abstract") or "").strip()
+        content = (entry.get("content") or "").strip()
+
+        text = ""
+        if question and answer:
+            text = f"Question: {question}\nAnswer: {answer}"
+        elif title and abstract:
+            text = f"Title: {title}\nAbstract: {abstract}"
+            question = title
+        elif content:
+            text = content
+            if not question:
+                question = (entry.get("title") or "")[:240]
+
+        if not text:
             continue
 
-        text = f"Question: {question}\nAnswer: {answer}"
         metadata = {
             "id": str(entry.get("id") or f"doc-{idx + 1}"),
             "source": entry.get("source") or "medical_data.json",
             "updated_at": entry.get("updated_at") or "unknown",
             "question": question,
+            "dataset": entry.get("dataset") or "unknown",
+            "pmid": entry.get("pmid") or "",
+            "journal": entry.get("journal") or "",
         }
         docs.append(Document(page_content=text, metadata=metadata))
 
@@ -56,7 +73,7 @@ def main() -> None:
     if not docs:
         raise ValueError(f"No valid QA pairs found in {DATA_PATH}")
 
-    embedding_model = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     db = FAISS.from_documents(docs, embedding_model)
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)

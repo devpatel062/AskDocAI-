@@ -135,6 +135,35 @@ graph TD
    python scripts/create_faiss_index.py
    ```
 
+## 🌐 Import Larger Online PubMed Dataset
+
+Use NCBI E-utilities to fetch larger abstract datasets directly from PubMed.
+If `--query` is omitted, the importer uses a built-in broad medical-issues query.
+
+1. Download records by query:
+  ```bash
+  python scripts/import_pubmed.py \
+    --email "you@example.com" \
+    --max-records 10000 \
+    --start-year 2015 \
+    --output data/medical_data.json
+  ```
+
+2. Optionally merge new PubMed results into existing JSON:
+  ```bash
+  python scripts/import_pubmed.py \
+    --query "cardiovascular disease" \
+    --email "you@example.com" \
+    --max-records 3000 \
+    --append \
+    --output data/medical_data.json
+  ```
+
+3. Rebuild the FAISS index:
+  ```bash
+  python scripts/create_faiss_index.py
+  ```
+
 The backend `/api/ask` endpoint now includes:
 - `response`: generated answer (existing field, unchanged for frontend compatibility)
 - `citations`: source metadata for retrieved context documents
